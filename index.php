@@ -1,3 +1,36 @@
+
+
+<?php
+// global $ConnectingDB;
+// $sql = "SELECT * FROM Topics ORDER BY TopicID desc";
+// $stmt = $ConnectingDB->query($sql);
+// while ($DataRows = $stmt->fetch()) {
+//   $TopicId = $DataRows["TopicID"];
+//   $TopicName=$DataRows["Topic"];
+// }
+require_once("config.php");
+//  session_start();   
+// $currentUser = $_SESSION['current_username'];
+    // require('connect.php');
+    
+ // SQL is written as a String.
+ $query = "SELECT * FROM Topics";
+
+ // A PDO::Statement is prepared from the query.
+ $statement = $ConnectingDB->prepare($query);
+
+ // Execution on the DB server is delayed until we execute().
+ $statement->execute(); 
+
+ // $query_user = "SELECT * FROM Users WHERE Username = {$currentUser}";
+
+ // // A PDO::Statement is prepared from the query.
+ // $statement_user = $ConnectingDB->prepare($query_user);
+
+ // // Execution on the DB server is delayed until we execute().
+ // $statement_user->execute(); 
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +40,11 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="Css/Styles.css">
-  <title>Document</title>
+  <title>Blog Page</title>
 </head>
 <body>
   <!-- NAVBAR -->
-  <div style="height:10px; background:#FFBB33;"></div>
+  <div style="height:10px; background:#27aae1;"></div>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a href="#" class="navbar-brand"> Mary's Food World</a>
@@ -20,68 +53,99 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarcollapseCMS">
       <ul class="navbar-nav mr-auto">
-
         <li class="nav-item">
-          <a href="MyProfile.php" class="nav-link"> About Us</a>
-        </li>
-
-
-        <li class="nav-item">
-          <a href="Dashboard.php" class="nav-link">Recipes</a>
-        </li>
-        
+          <a href="Index.php" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link" target="_blank">Products</a>
-        </li> 
-
-        </li> 
-         <li class="nav-item">
-          <a href="Categories.php" class="nav-link">Restaurants</a>
-        </li> 
-
-
+          <a href="recipe.php" class="nav-link">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a href="restaurant.php" class="nav-link">Restaurants</a>
+        </li>
+        <li class="nav-item">
+          <a href="product.php" class="nav-link">Products</a>
+        </li>
+        <li class="nav-item">
+          <a href="register.php" class="nav-link">Register</a>
+        </li>
+        <li class="nav-item">
+          <a href="CreateRecipe.php" class="nav-link">Create Recipe</a>
+        </li>
+        <li class="nav-item">
+          <a href="CreateRestaurant.php" class="nav-link">Create Restos</a>
+        </li>
+        <li class="nav-item">
+          <a href="CreateProduct.php" class="nav-link">Create Product</a>
+        </li>
       </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a href="Logout.php" class="nav-link text-danger">
-          <i class="fas fa-user-times"></i> Logout</a></li>
-      </ul>
+      <?php if(!isset($_SESSION['login']) && $_SESSION['login'] == False) : ?>
+          <ul class="navbar-nav ml-auto">
+            <form class="form-inline d-none d-sm-block" action="Login.php">
+              <div class="form-group">
+                <button  class="btn btn-primary" name="login">Already A Member?</button>
+              </div>
+            </form>
+          </ul>
+        <?php else : ?>
+            <a href="Index.php">Welcome back!</a>
+        <?php endif; ?>
       </div>
     </div>
   </nav>
-    <div style="height:20px; background:#FFBB33;"></div>
+    <div style="height:10px; background:#27aae1;"></div>
     <!-- NAVBAR END -->
     <!-- HEADER -->
-    <header class="bg-dark text-white py-3">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-          <h1> Welcome to our world!</h1>
-          </div>
+    <div class="container">
+      <div class="row mt-4">
+
+        <!-- Main Area Start-->
+        <div class="col-sm-8 ">
+          <h1>Your Favourite Foodie Blog</h1>
+          <h1 class="lead">Harriet's WEBD-2008 Project - RRC</h1>
         </div>
-      </div>
-    </header>
+        <!-- Main Area End-->
+
+        <!-- Side Area Start -->
+        <div class="col-sm-4">
+          <div class="card mt-4">
+            <div class="card-body">
+
+              <div class="text-center">Welcome to Mary's Food World! That's right! You can share your views on recipes here </div>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="card" >
+            <div class="card-header bg-primary text-light" style="background:red">
+              <h2 class="lead">Recent Posts on <?php $GET_?></h2>
+              </div>
+              <div class="card-body">
+                  <ul>
+                    <?php while ($row = $statement->fetch()): ?>        
+                      <a href="<?= $row['Title'] ?>.php"><?= $row['Topic'] ?></a>
+                    </br>
+                    </br>
+                    <?php endwhile ?>
+                  </ul>
+                
+          
+            </div>
+          </div>
+
+        </div>
+        <!-- Side Area End -->
+
+    </div> 
+
+    </div>
+
     <!-- HEADER END -->
-<br>
-    <!-- FOOTER -->
-    <footer class="bg-dark text-white">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-          <!-- <p class="lead text-center">Theme By | Jazeb Akram | <span id="year"></span> &copy; ----All right Reserved.</p> -->
-          <p class="text-center small"><a style="color: white; text-decoration: none; cursor: pointer;" href="" target="_blank"> This site is created for Harriet's BIT Project</a></p>
-           </div>
-         </div>
-      </div>
-    </footer>
-        <div style="height:20px; background:#FFBB33;"></div>
-    <!-- FOOTER END-->
+
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-<script>
-  $('#year').text(new Date().getFullYear());
-</script>
+
 </body>
 </html>
