@@ -9,16 +9,32 @@
 //   $TopicName=$DataRows["Topic"];
 // }
 require_once("config.php");
-    // require('connect.php');
-    
-     // SQL is written as a String.
+session_start();
+
+if(!isset($_SESSION['current_user_role']) && $_SESSION['current_user_role'] == "user"){
+  header("Location: index.php");
+  exit;
+}
+
+
      $query = "SELECT * FROM Recipe";
 
-     // A PDO::Statement is prepared from the query.
+
      $statement = $ConnectingDB->prepare($query);
 
-     // Execution on the DB server is delayed until we execute().
+
      $statement->execute(); 
+     //$current_user_id = $_SESSION['current_user_id'];
+
+     $query = "SELECT * FROM Restaurant WHERE UserID = :userid";
+
+
+     $statement_inspire_rest = $ConnectingDB->prepare($query);
+
+     $statement_inspire_rest->bindValue(':userid', $_SESSION['current_user_id']);
+
+     $statement_inspire_rest->execute(); 
+
 
 if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps']))
 {
@@ -32,9 +48,13 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             $ingredients = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $steps = filter_input(INPUT_POST, 'steps', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            //$selectedRest = $('#selectedrest').find(":selected");
+           // $row_rest_selected = $statement_inspire_rest->fetch();
+            //$restid = $row_rest_selected['RestID'];
+            $restid = 1;
+            $userid = $_SESSION['current_user_id'];
 
-
-            $query = "INSERT INTO Recipe (RecipeName, PrepTime, CookingTime, Ingredients, Steps) VALUES (:recipename, :cookingtime, :preptime, :ingredients, :steps)";
+            $query = "INSERT INTO Recipe (RecipeName, PrepTime, CookingTime, Ingredients, Steps, RestID, UserID) VALUES (:recipename, :cookingtime, :preptime, :ingredients, :steps, :restid, :userid)";
             $statement = $ConnectingDB->prepare($query);
 
             //  Bind values to the parameters
@@ -44,16 +64,18 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             $statement->bindValue(':ingredients', $ingredients);
 
             $statement->bindValue(':steps', $steps);
+            $statement->bindValue(':restid', $restid);
+            $statement->bindValue(':userid', $userid);
 
             if ($statement->execute())
             {
-                header("Location: index.php");
+                header("Location: Recipe.php");
                 exit;
             }
         
         else
         {
-            header("Location: CreateRecipe.html");
+            header("Location: CreateRecipe.php");
             exit;
         }
 }
@@ -109,20 +131,18 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
         <li class="nav-item">
           <a href="product.php" class="nav-link">Products</a>
         </li>
-        <li class="nav-item">
-          <a href="register.php" class="nav-link">Register</a>
-        </li>
-                <li class="nav-item">
-          <a href="CreateRecipe.php" class="nav-link">Create Recipe</a>
-        </li>
-        <li class="nav-item">
-          <a href="CreateRestaurant.php" class="nav-link">Create Restos</a>
-        </li>
-        <li class="nav-item">
-          <a href="CreateProduct.php" class="nav-link">Create Product</a>
-        </li>
-      </ul>
 
+
+      </ul>
+      <ul class="navbar-nav mr-auto">
+        <div>
+            <?php if(isset($_SESSION['current_username'])) : ?>
+              <div>
+               <a href="manageaccount.php"><?=  $_SESSION['current_username']. $_SESSION['current_user_id']?>    </a> 
+              </div>
+            <?php endif ?>            
+        </div>
+      </ul>
       </div>
     </div>
   </nav>
@@ -144,6 +164,16 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
               <label for="title"> <span class="FieldInfo"> Post Title: </span></label>
                <input class="form-control" type="text" name="recipename" id="recipename" placeholder="My New Recipe" value="">
             </div>
+            <div class="form-group">
+              <label for="title"> <span class="FieldInfo"> Inspired by this restaurant: </span></label>
+              <select class="form-control" id="selectedrest">
+                <?php while ($row = $statement_inspire_rest->fetch()): ?>
+                  <div>
+                    <option><?= $row['RestName'] ?></option>
+                  </div>        
+                <?php endwhile ?>
+              </select>
+            </div>
  <!--            <div class="form-group">
               <div class="custom-file">
               <input class="custom-file-input" type="File" name="Image" id="imageSelect" value="">
@@ -152,11 +182,11 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             </div> -->
             <div class="form-group">
               <label for="cookingtime"> <span class="FieldInfo"> Cooking Time </span></label>
-               <input class="form-control" type="text" name="cookingtime" id="cookingtime" placeholder="00:30" value="">
+               <input class="form-control" type="text" name="cookingtime" id="cookingtime" placeholder="20 minutes" value="">
             </div>
             <div class="form-group">
               <label for="preptime"> <span class="FieldInfo"> Prep Time </span></label>
-               <input class="form-control" type="text" name="preptime" id="preptime" placeholder="00:30" value="">
+               <input class="form-control" type="text" name="preptime" id="preptime" placeholder="2 hours" value="">
             </div>
             <div class="form-group">
               <label for="Post"> <span class="FieldInfo"> Ingredients </span></label>
