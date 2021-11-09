@@ -1,34 +1,23 @@
-
-
 <?php
-// global $ConnectingDB;
-// $sql = "SELECT * FROM Topics ORDER BY TopicID desc";
-// $stmt = $ConnectingDB->query($sql);
-// while ($DataRows = $stmt->fetch()) {
-//   $TopicId = $DataRows["TopicID"];
-//   $TopicName=$DataRows["Topic"];
-// }
 require_once("config.php");
-//  session_start();   
-// $currentUser = $_SESSION['current_username'];
-    // require('connect.php');
-    
- // SQL is written as a String.
+
  $query = "SELECT * FROM Topics";
-
- // A PDO::Statement is prepared from the query.
  $statement = $ConnectingDB->prepare($query);
-
- // Execution on the DB server is delayed until we execute().
  $statement->execute(); 
 
- // $query_user = "SELECT * FROM Users WHERE Username = {$currentUser}";
+ $query_top_recipe = "SELECT * FROM Recipe WHERE RecipeID = 1";
+ $statement_top_recipe = $ConnectingDB->prepare($query_top_recipe);
+ $statement_top_recipe->execute(); 
 
- // // A PDO::Statement is prepared from the query.
- // $statement_user = $ConnectingDB->prepare($query_user);
+ $query_top_product = "SELECT * FROM Product WHERE ProductID = 1";
+ $statement_top_product = $ConnectingDB->prepare($query_top_product);
+ $statement_top_product->execute(); 
 
- // // Execution on the DB server is delayed until we execute().
- // $statement_user->execute(); 
+ $query_top_rest = "SELECT * FROM Restaurant WHERE RestID = 1";
+ $statement_top_rest = $ConnectingDB->prepare($query_top_rest);
+ $statement_top_rest->execute(); 
+
+ session_start();
  ?>
 
 <!DOCTYPE html>
@@ -65,32 +54,39 @@ require_once("config.php");
         <li class="nav-item">
           <a href="product.php" class="nav-link">Products</a>
         </li>
+
         <li class="nav-item">
-          <a href="register.php" class="nav-link">Register</a>
+          <a href="AdvancedSearch.php" class="nav-link">Advanced Search</a>
         </li>
-        <li class="nav-item">
-          <a href="CreateRecipe.php" class="nav-link">Create Recipe</a>
-        </li>
-        <li class="nav-item">
-          <a href="CreateRestaurant.php" class="nav-link">Create Restos</a>
-        </li>
-        <li class="nav-item">
-          <a href="CreateProduct.php" class="nav-link">Create Product</a>
-        </li>
-      </ul>
-      <?php if(!isset($_SESSION['login']) && $_SESSION['login'] == False) : ?>
-          <ul class="navbar-nav ml-auto">
-            <form class="form-inline d-none d-sm-block" action="Login.php">
-              <div class="form-group">
-                <button  class="btn btn-primary" name="login">Already A Member?</button>
-              </div>
-            </form>
-          </ul>
-        <?php else : ?>
-            <a href="Index.php">Welcome back!</a>
-        <?php endif; ?>
+        <?php if(isset($_SESSION['current_username'])) : ?>
+          <li class="nav-item">
+            <a href="mypost.php" class="nav-link">My Post</a>
+          </li>
+      </ul> 
+      <form class="form-inline d-none d-sm-block" action="createpost.php">
+        <div class="form-group">
+          <button  class="btn btn-primary" name="createpost">Create Post</button>
+        </div>
+      </form>
+      <form class="form-inline d-none d-sm-block" action="logout.php">
+        <div class="form-group">
+          <button  class="btn btn-primary" name="logout">Log out</button>
+        </div>
+      </form>
+              <?php else :?>
+                <li class="nav-item">
+                  <a href="register.php" class="nav-link">Register</a>
+                </li>
+                <form class="form-inline d-none d-sm-block" action="Login.php">
+                  <div class="form-group">
+                    <button  class="btn btn-primary" name="login">Already A Member?</button>
+                  </div>
+                </form>
+            <?php endif ?>            
       </div>
     </div>
+
+    
   </nav>
     <div style="height:10px; background:#27aae1;"></div>
     <!-- NAVBAR END -->
@@ -101,8 +97,58 @@ require_once("config.php");
         <!-- Main Area Start-->
         <div class="col-sm-8 ">
           <h1>Your Favourite Foodie Blog</h1>
-          <h1 class="lead">Harriet's WEBD-2008 Project - RRC</h1>
+          <h1 class="lead">Harriet's WEBD-2008 Project - RRC</h1>  
+          <?php if(isset($_SESSION['current_username'])) : ?>              
+            <div>
+               <a href="index.php"><?= 'Welcome Back! '. $_SESSION['current_username']. $_SESSION['current_user_id']?>    </a> 
+            </div>
+ <?php endif ?>  
         </div>
+        <!-- show top posts of each topic -->
+        <div class="col-sm-8 ">
+          </br>
+          </br>
+          <h3>Our Recommended Recipe</h3>
+          <?php while ($row = $statement_top_recipe->fetch()): ?>
+          <div>
+            <h4><?= $row['RecipeName'] ?></h4>
+            <p>Authored by: <?= $row['UserID'] ?></p>
+            <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
+            <small>Prep Time: <?= $row['PrepTime'] ?></small>
+            <p>Ingredients: <?= $row['Ingredients'] ?></p>
+            <p>Steps: <?= $row['Steps'] ?></p>
+          </div>        
+          <?php endwhile ?>
+
+          </br>
+          </br>
+          <h3>Our Recommended Product</h3>
+          <?php while ($row = $statement_top_product->fetch()): ?>
+            <div>
+              <h4><?= $row['ProductName'] ?></h4>
+              <p>Authored by: <?= $row['UserID'] ?></p>
+              <p>Used in: <?= $row['RecipeID'] ?></p>
+              <p>Origin: <?= $row['Origin'] ?></p>
+              <p>Price: $<?= $row['Price'] ?></p>
+            </div>        
+          <?php endwhile ?>
+ 
+
+
+          </br>
+          </br>
+          <h3>Our Recommended Restaurant</h3>
+          <?php while ($row = $statement_top_rest->fetch()): ?>
+          <div>
+            <h4><?= $row['RestName'] ?></h4>
+            <p>Recommended by: <?= $row['UserID'] ?></p>
+            <p>Address: <?= $row['Address'] ?></p>
+            <p>Rating: <?= $row['Rating'] ?></p>
+            <p>Review: <?= $row['Review'] ?></p>
+          </div>        
+        <?php endwhile ?>
+        </div>
+
         <!-- Main Area End-->
 
         <!-- Side Area Start -->
