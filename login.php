@@ -10,36 +10,43 @@ require_once("config.php");
     // require('connect.php');
     
      // SQL is written as a String.
-
-        if  (isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_POST['username'])) {
+          if  (isset($_POST['username']) && isset($_POST['password'])) {
           // $username = $row['username'];
           // $password = $row['password'];
           $username = $_POST['username'];
           $password = $_POST['password'];
 
-          $query = "SELECT * FROM Users";
+          $query = "SELECT * FROM Users WHERE Username = '$username'";
 
-          // A PDO::Statement is prepared from the query.
           $statement = $ConnectingDB->prepare($query);
-
-          // $statement->bindValue(':username', $_POST['username']);
-
-          // Execution on the DB server is delayed until we execute().
           $statement->execute(); 
-          while ($row = $statement->fetch()){
-            $uname = $row['Username'];
-            $pw = $row['Password'];
-          }
 
-          if ($username == $uname && $password == $pw) {
-                    session_start();    
-            $_SESSION['current_username'] = $username;
-            $_SESSION['login'] = TRUE;
-            header("Location: index.php");
-            exit;
-          }
-        
+            $row = $statement->fetch();
+            if ($row == true) {
+              $uname = $row['Username'];
+              $pw = $row['Password'];
+              $userid = $row['UserID'];     
+              $user_role =  $row['Role'];
+
+              if ($username == $uname && password_verify($password, $pw)) {
+                session_start();    
+                $_SESSION['current_username'] = $username;
+                $_SESSION['current_user_id'] = $userid;
+                $_SESSION['current_user_role'] = $user_role;
+
+                header("Location: index.php");
+                exit;
+              }       
+            }
+            else
+            {
+              echo "Error Occurred" .$uname. $pw. $username. $password;
+              exit;
+            }
       }
+}
+
 
 
 
@@ -123,7 +130,7 @@ require_once("config.php");
                     <div class="input-group-prepend">
                       <span class="input-group-text text-white bg-info"> <i class="fas fa-user"></i> </span>
                     </div>
-                    <input type="text" class="form-control" name="username" id="username" value="username">
+                    <input type="text" class="form-control" name="username" id="username" value="">
             
                   </div>
                 </div>
@@ -133,10 +140,10 @@ require_once("config.php");
                     <div class="input-group-prepend">
                       <span class="input-group-text text-white bg-info"> <i class="fas fa-lock"></i> </span>
                     </div>
-                    <input type="password" class="form-control" name="password" id="password" value="password">
+                    <input type="password" class="form-control" name="password" id="password" value="">
                   </div>
                 </div>
-                <input type="submit" name="Submit" class="btn btn-info btn-block" value="Login">
+                <input type="submit" name="submit" class="btn btn-info btn-block" value="Login">
 
               </form>
 
