@@ -7,53 +7,94 @@ Topic:
 */
 
 require_once("config.php");
+echo password_hash("123566", PASSWORD_DEFAULT);
+
+$query = "SELECT * FROM Users";
+$statement = $ConnectingDB->prepare($query);
+$statement->execute(); 
+
+if (isset($_POST['username']) && isset($_POST['password']))
+{
+
+        if((strlen($_POST['username'])) >= 1 && (strlen($_POST['password'])) >= 1 && (!ctype_space($_POST['username'])) && (!ctype_space($_POST['password'])))
+        {
+
+            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            // $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $confirmpassword = filter_input(INPUT_POST, 'confirmpassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            if($password == $confirmpassword){
+              $query_insert_user = "INSERT INTO Users (UserName, Password, Role) VALUES (:username, :password, :role)";
+              $statement_insert_user = $ConnectingDB->prepare($query_insert_user);
+
+              //  Bind values to the parameters
+              $statement_insert_user->bindValue(':username', $username);
+              // $statement_insert_user->bindValue(':email', $email);
+              $statement_insert_user->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
+              $statement_insert_user->bindValue(':role', "user");
+
+              if ($statement_insert_user->execute())
+              {
+                  header("Location: index.php");
+                  exit;
+              }
+        }
+        else
+        {
+            header("Location: error.html");
+            exit;
+        }
+            }
 
 
-$register_username = "";
-$register_email = "";
-$register_password = "";
-$register_confirm_password = "";
-$error = array();
-
-if (isset($_POST['register'])) {
-  $register_username = $_POST['username'];
-  $register_email = $_POST['email'];
-  $register_password = $_POST['password'];
-  $register_confirm_password = $_POST['confirmPassword'];
-
-  if (empty( $register_username) || empty( $register_email) || empty( $register_password) || empty( $register_confirm_password) ) {
-    $error = "Required";
-  }
-  elseif ($register_password != $register_confirm_password) {
-    $error = "The passwords do not match";
-  }
 }
 
+// $register_username = "";
+// $register_email = "";
+// $register_password = "";
+// $register_confirm_password = "";
+// $error = array();
 
- if(!isset($error)){
-//no error
-$query_username = $row->prepare("SELECT Username FROM Users WHERE Username = :username");
-$query_username->bindParam(':username', $register_username);
-$query_username->execute();
+// if (isset($_POST['register'])) {
+//   $register_username = $_POST['username'];
+//   $register_email = $_POST['email'];
+//   $register_password = $_POST['password'];
+//   $register_confirm_password = $_POST['confirmPassword'];
 
-if($query_username->rowCount() > 0){
-    echo "username already exists! Use another username";
-} else {
-    //Securly insert into database
-    $sql = 'INSERT INTO Users (Username, Email, Password, Role) VALUES (:username,:email,:password, "user")';    
-    $query = $row->prepare($sql);
+//   if (empty( $register_username) || empty( $register_email) || empty( $register_password) || empty( $register_confirm_password) ) {
+//     $error = "Required";
+//   }
+//   elseif ($register_password != $register_confirm_password) {
+//     $error = "The passwords do not match";
+//   }
+// }
 
-    $query->execute(array(
 
-    ':username' => $register_username,
-    ':email' => $register_email,
-    ':password' => $register_password,
-    //':user' => $Role
+//  if(!isset($error)){
+// //no error
+// $query_username = $row->prepare("SELECT Username FROM Users WHERE Username = :username");
+// $query_username->bindParam(':username', $register_username);
+// $query_username->execute();
 
-    ));
-    }
-}
-// else{
+// if($query_username->rowCount() > 0){
+//     echo "username already exists! Use another username";
+// } else {
+//     //Securly insert into database
+//     $sql = 'INSERT INTO Users (Username, Email, Password, Role) VALUES (:username,:email,:password, "user")';    
+//     $query = $row->prepare($sql);
+
+//     $query->execute(array(
+
+//     ':username' => $register_username,
+//     ':email' => $register_email,
+//     ':password' => $register_password,
+//     //':user' => $Role
+
+//     ));
+//     }
+// }
+// // else{
 //     echo "error occured";
 //     exit();
 // }
@@ -135,13 +176,13 @@ if($query_username->rowCount() > 0){
                   </div>
                 </div>
 
-                <div class="form-group">
+<!--                 <div class="form-group">
                   <label for="email"><span class="FieldInfo">Email:</span></label>
                   <div class="input-group mb-3">
 
                     <input type="text" class="form-control" name="email" id="email" value="">
                   </div>
-                </div>
+                </div> -->
 
 
                 <div class="form-group">
@@ -149,10 +190,10 @@ if($query_username->rowCount() > 0){
                   <div class="input-group mb-3">
                     <input type="password" class="form-control" name="password" id="password" value="">
                   </div>
-                  <label for="confirmPassword"><span class="FieldInfo">Confirm Password:</span></label>
+                  <label for="confirmpassword"><span class="FieldInfo">Confirm Password:</span></label>
                     <div class="input-group mb-3">
 
-                    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="">
+                    <input type="password" class="form-control" name="confirmpassword" id="confirmpassword" value="">
                   </div>
                 </div>
                 <input type="submit" name="register" class="btn btn-info btn-block" value="register">
