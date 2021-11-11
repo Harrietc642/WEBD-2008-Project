@@ -13,7 +13,7 @@ session_start();
     // require('connect.php');
     $userid = $_SESSION['current_user_id'];
      // SQL is written as a String.
-     $query = "SELECT * FROM Recipe WHERE UserID = $userid";
+     $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
 
      // A PDO::Statement is prepared from the query.
      $statement = $ConnectingDB->prepare($query);
@@ -35,44 +35,8 @@ session_start();
   <title>Blog Page</title>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <div style="height:10px; background:#27aae1;"></div>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a href="#" class="navbar-brand"> Mary's Food World</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarcollapseCMS">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="Index.php" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="recipe.php" class="nav-link">Recipes</a>
-        </li>
-        <li class="nav-item">
-          <a href="restaurant.php" class="nav-link">Restaurants</a>
-        </li>
-        <li class="nav-item">
-          <a href="product.php" class="nav-link">Products</a>
-        </li>
-        <li class="nav-item">
-          <a href="register.php" class="nav-link">Register</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <form class="form-inline d-none d-sm-block" action="Login.php">
-          <div class="form-group">
-          <button  class="btn btn-primary" name="login">Already A Member?</button>
-          </div>
-        </form>
-      </ul>
-      </div>
-    </div>
-  </nav>
-    <div style="height:10px; background:#27aae1;"></div>
-    <!-- NAVBAR END -->
+    <?php include('basic.html')?>
+
     <!-- HEADER -->
     <div class="container">
       <div class="row mt-4">
@@ -83,9 +47,10 @@ session_start();
         <?php while ($row = $statement->fetch()): ?>
           <div class="container">
         <div class="row mt-4">
-            <h4><?= $row['RecipeName']. '-  Authored by: '. $row['UserID'] ?></h4></br>
+            <h4><?= $row['RecipeName'] ?></h4></br>
             <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
             <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
+            <a href="EditRecipe.php?id=<?=($row['RecipeID'])?>">edit</a>
             <p>Ingredients: <?= $row['Ingredients'] ?></p></br>
             <p>Steps: <?= $row['Steps'] ?></p></br>
           </div>

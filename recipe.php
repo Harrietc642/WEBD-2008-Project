@@ -12,7 +12,7 @@ require_once("config.php");
     // require('connect.php');
     
      // SQL is written as a String.
-     $query = "SELECT * FROM Recipe JOIN Users using(UserID)";
+     $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID)";
 
      // A PDO::Statement is prepared from the query.
      $statement = $ConnectingDB->prepare($query);
@@ -79,10 +79,13 @@ require_once("config.php");
         <!-- Main Area Start-->
 
 
-        <?php while ($row = $statement->fetch()): ?>
+      
           <div class="container">
         <div class="row mt-4">
-            <h4><?= $row['RecipeName']. '-  Authored by: '. $row['Username'] ?></h4></br>
+            <?php while ($row = $statement->fetch()): ?>
+            <h4><?= $row['RecipeName']?></h4></br>
+            <small><?= $row['CuisineName'] ?></small>
+            <small>-  Authored by: <?= $row['Username'] ?></small>
             <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
             <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
             <p>Ingredients: <?= $row['Ingredients'] ?></p></br>

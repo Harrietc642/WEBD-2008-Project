@@ -1,13 +1,7 @@
 
 
 <?php
-// global $ConnectingDB;
-// $sql = "SELECT * FROM Topics ORDER BY TopicID desc";
-// $stmt = $ConnectingDB->query($sql);
-// while ($DataRows = $stmt->fetch()) {
-//   $TopicId = $DataRows["TopicID"];
-//   $TopicName=$DataRows["Topic"];
-// }
+
 require_once("config.php");
 session_start();
 
@@ -24,37 +18,37 @@ if(!isset($_SESSION['current_user_role']) && $_SESSION['current_user_role'] == "
 
 
      $statement->execute(); 
-     //$current_user_id = $_SESSION['current_user_id'];
+     $current_user_id = $_SESSION['current_user_id'];
 
-     $query = "SELECT * FROM Restaurant WHERE UserID = :userid";
+     $query1 = "SELECT * FROM Restaurant WHERE UserID = :userid";
+     
 
-
-     $statement_inspire_rest = $ConnectingDB->prepare($query);
-
+     $statement_inspire_rest = $ConnectingDB->prepare($query1);
      $statement_inspire_rest->bindValue(':userid', $_SESSION['current_user_id']);
-
      $statement_inspire_rest->execute(); 
+
+
+
+     $query2 = "SELECT * FROM Cuisines";
+     $statement_cuisine = $ConnectingDB->prepare($query2);
+      $statement_cuisine->execute();
+
+
 
 
 if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps']))
 {
-
-
-
             $recipename = filter_input(INPUT_POST, 'recipename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $cookingtime = filter_input(INPUT_POST, 'cookingtime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $preptime = filter_input(INPUT_POST, 'preptime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $ingredients = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $steps = filter_input(INPUT_POST, 'steps', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            //$selectedRest = $('#selectedrest').find(":selected");
-           // $row_rest_selected = $statement_inspire_rest->fetch();
-            //$restid = $row_rest_selected['RestID'];
-            $restid = 1;
+            $cuisineid = filter_input(INPUT_POST, 'cuisineid', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            // $restid = 1;
             $userid = $_SESSION['current_user_id'];
 
-            $query = "INSERT INTO Recipe (RecipeName, PrepTime, CookingTime, Ingredients, Steps, RestID, UserID) VALUES (:recipename, :cookingtime, :preptime, :ingredients, :steps, :restid, :userid)";
+            $query = "INSERT INTO Recipe (RecipeName, PrepTime, CookingTime, Ingredients, Steps, UserID, CuisineID) VALUES (:recipename, :cookingtime, :preptime, :ingredients, :steps, :userid, :cuisineid)";
             $statement = $ConnectingDB->prepare($query);
 
             //  Bind values to the parameters
@@ -62,10 +56,9 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             $statement->bindValue(':cookingtime', $cookingtime);
             $statement->bindValue(':preptime', $preptime);
             $statement->bindValue(':ingredients', $ingredients);
-
             $statement->bindValue(':steps', $steps);
-            $statement->bindValue(':restid', $restid);
             $statement->bindValue(':userid', $userid);
+            $statement->bindValue(':cuisineid', $cuisineid);
 
             if ($statement->execute())
             {
@@ -79,22 +72,6 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             exit;
         }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  ?>
 
 <!DOCTYPE html>
@@ -108,46 +85,8 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
   <link rel="stylesheet" href="Css/Styles.css">
   <title>Blog Page</title>
 </head>
-<body>
-  <!-- NAVBAR -->
-  <div style="height:10px; background:#27aae1;"></div>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a href="#" class="navbar-brand"> Mary's Food World</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarcollapseCMS">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="Index.php" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="recipe.php" class="nav-link">Recipes</a>
-        </li>
-        <li class="nav-item">
-          <a href="restaurant.php" class="nav-link">Restaurants</a>
-        </li>
-        <li class="nav-item">
-          <a href="product.php" class="nav-link">Products</a>
-        </li>
-
-
-      </ul>
-      <ul class="navbar-nav mr-auto">
-        <div>
-            <?php if(isset($_SESSION['current_username'])) : ?>
-              <div>
-               <a href="manageaccount.php"><?=  $_SESSION['current_username']. $_SESSION['current_user_id']?>    </a> 
-              </div>
-            <?php endif ?>            
-        </div>
-      </ul>
-      </div>
-    </div>
-  </nav>
-    <div style="height:10px; background:#27aae1;"></div>
-    <!-- NAVBAR END -->
+<body style="background:#ffcc00">
+<?php include('basic.html')?>
     <!-- HEADER -->
     <div class="container">
       <div class="row mt-4">
@@ -164,22 +103,18 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
               <label for="title"> <span class="FieldInfo"> Post Title: </span></label>
                <input class="form-control" type="text" name="recipename" id="recipename" placeholder="My New Recipe" value="">
             </div>
+
             <div class="form-group">
-              <label for="title"> <span class="FieldInfo"> Inspired by this restaurant: </span></label>
-              <select class="form-control" id="selectedrest">
-                <?php while ($row = $statement_inspire_rest->fetch()): ?>
+              <label for="title"> <span class="FieldInfo"> Cuisine: </span></label>
+              <select class="form-control" id="cuisineid" name="cuisineid">
+                <?php while ($row = $statement_cuisine->fetch()): ?>
                   <div>
-                    <option><?= $row['RestName'] ?></option>
+                    <option value="<?= $row['CuisineID'] ?>"><?= $row['CuisineName'] ?></option>
                   </div>        
                 <?php endwhile ?>
               </select>
             </div>
- <!--            <div class="form-group">
-              <div class="custom-file">
-              <input class="custom-file-input" type="File" name="Image" id="imageSelect" value="">
-              <label for="imageSelect" class="custom-file-label">Select Image... </label>
-              </div>
-            </div> -->
+
             <div class="form-group">
               <label for="cookingtime"> <span class="FieldInfo"> Cooking Time </span></label>
                <input class="form-control" type="text" name="cookingtime" id="cookingtime" placeholder="20 minutes" value="">
@@ -212,17 +147,11 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
 
 </section>
         <!-- Main Area End-->
-
-
-
     </div> 
 
     </div>
 
     <!-- HEADER END -->
-
-
-
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

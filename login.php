@@ -8,7 +8,7 @@ Topic:
 
 require_once("config.php");
     // require('connect.php');
-    
+
      // SQL is written as a String.
 if (isset($_POST['username'])) {
           if  (isset($_POST['username']) && isset($_POST['password'])) {
@@ -61,7 +61,7 @@ if (isset($_POST['username'])) {
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="Css/Styles.css">
+  <!-- <link rel="stylesheet" href="Css/Styles.css"> -->
   <title>Login</title>
 </head>
 <body>
@@ -121,7 +121,7 @@ if (isset($_POST['username'])) {
               <form class="" action="" method="post">
 
 
-                  <p>Incorrect Username or Password, try again!</p>
+                  <!-- <p>Incorrect Username or Password, try again!</p> -->
 
 
                 <div class="form-group">
