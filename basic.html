@@ -1,68 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>basic layout</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="Css/Styles.css">
+  <link rel="stylesheet" href="cuisinelist.js">
+<!--   <link rel="stylesheet" href="Bootstrap/js/bootstrap.bundle.js">
+  <link rel="stylesheet" href="Bootstrap/js/bootstrap.bundle.js.map">
+  <link rel="stylesheet" href="Bootstrap/js/bootstrap.bundle.min.js">
+  <link rel="stylesheet" href="Bootstrap/js/bootstrap.bundle.min.js.map">
+  <link rel="stylesheet" href="Bootstrap/js/bootstrap.js">
+    <link rel="stylesheet" href="Bootstrap/js/bootstrap.js.map">
+    <link rel="stylesheet" href="Bootstrap/js/bootstrap.min.js">
+     <link rel="stylesheet" href="Bootstrap/js/bootstrap.min.js.map"> -->
+  <title>Basic layout</title>
 </head>
-<body>
-  <!-- NAVBAR -->
-  <div style="height:10px; background:#e65c00;"></div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background:#FFF">
+<body style="background:#f9f7f1">
+  <div style="height:10px; background:#b78763;"></div> <!-- Little decoration -->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background:#f6dbbc">
     <div class="container">
-      <a href="#" class="navbar-brand"> Mary's Food World</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarcollapseCMS" >
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="Index.php" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <a href="recipe.php" class="nav-link">Recipes</a>
-        </li>
-<!--         <li class="nav-item">
-          <a href="restaurant.php" class="nav-link">Restaurants</a>
-        </li>
-        <li class="nav-item">
-          <a href="product.php" class="nav-link">Products</a>
-        </li> -->
 
-        <li class="nav-item">
-          <a href="AdvancedSearch.php" class="nav-link">Advanced Search</a>
-        </li>
-        <?php if(isset($_SESSION['current_username'])) : ?>
+      <div id="title"><!-- <div id="title"> -->
+        <a href="#" class="navbar-brand"> Mary's Food World</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div><!-- <div id="title"> -->
+
+      <div class="collapse navbar-collapse" id="navbarcollapseCMS" ><!-- <div class="collapse navbar-collapse" id="navbarcollapseCMS" > -->
+        <ul class="navbar-nav mr-auto"><!--  <ul class="navbar-nav mr-auto">  -->
+
+          <!-- everyone can see starts [Home, all recipes, and search]-->
           <li class="nav-item">
-            <a href="mypost.php" class="nav-link">My Post</a>
+            <a href="Index.php" class="nav-link">Home</a>
           </li>
-      </ul> 
-      <form class="form-inline d-none d-sm-block" action="createpost.php">
-        <div class="form-group">
-          <button  class="btn btn-primary" name="createpost">Create Post</button>
-        </div>
-      </form>
-      <form class="form-inline d-none d-sm-block" action="logout.php">
-        <div class="form-group">
-          <button  class="btn btn-primary" name="logout">Log out</button>
-        </div>
-      </form>
-    </div>
-              <?php else :?>
-                <li class="nav-item">
-                  <a href="register.php" class="nav-link">Register</a>
-                </li>
-                <form class="form-inline d-none d-sm-block" action="Login.php">
-                  <div class="form-group">
-                    <button  class="btn btn-primary" name="login">Already A Member?</button>
-                  </div>
-                </form>
-            <?php endif ?>            
-      <!-- </div> -->
-    </div>
+          <li class="nav-item">
+            <a href="recipe.php" class="nav-link">RecipesByNames</a>
+          </li>
+          <li class="nav-item">
+            <a href="recipebycuisine.php" class="nav-link">RecipesByCuisines</a>
+          </li>
+          <li class="nav-item">
+            <a href="AdvancedSearch.php" class="nav-link">Search</a>
+          </li>
+          <!-- everyone can see ends [Home, all recipes, and search]-->
 
-    
+          <!-- only user and admin can see starts [My Post]-->
+          <?php if(isset($_SESSION['current_username'])) : ?>
+            <li class="nav-item">
+              <a href="MyRecipe.php" class="nav-link">My Post</a>
+            </li>
+          <?php endif ?>  
+          <!-- only user and admin can see ends in list [My Post]-->
+        </ul> <!-- <ul class="navbar-nav mr-auto">  -->
+
+          <!-- only user and admin can see button starts [Create Post, Logout]-->
+          <?php if(isset($_SESSION['current_username'])) : ?>
+            <!-- Create Post starts-->
+            <form class="form-inline d-none d-sm-block" action="CreateRecipe.php">
+              <div class="form-group col-lg-12">
+                <button  class="btn btn-primary" style="background: #b78763;" name="createpost">Create Post</button>
+              </div>
+            </form>
+            <!-- Create Post ends -->
+
+            <!-- Log out starts-->
+            <form class="form-inline d-none d-sm-block" action="logout.php">
+              <div class="form-group col-lg-12">
+                <button  class="btn btn-primary" style="background: #b78763;" name="logout">Log out</button>
+              </div>
+            </form>
+            <!-- Log out ends-->
+
+            <?php else :?>
+              <form class="form-inline d-none d-sm-block" action="register.php">
+                <div class="form-group col-lg-6">
+                  <button  class="btn btn-primary text-light" style="background: #b78763;" name="register">Register</button>
+                </div>
+              </form>
+
+              <form class="form-inline d-none d-sm-block" action="Login.php">
+                <div class="form-group col-lg-12">
+                  <button  class="btn btn-primary" style="background: #b78763;" name="login">Already A Member?</button>
+                </div>
+              </form>
+            <?php endif ?>  
+
+      </div>  <!-- <div class="collapse navbar-collapse" id="navbarcollapseCMS" > -->
+    </div>  
   </nav>
-    <div style="height:10px; background:#e65c00;"></div>
-    <!-- NAVBAR END -->
+  <div style="height:10px; background:#b78763;"></div><!-- Little decoration -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </body>
 </html>

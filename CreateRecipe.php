@@ -1,14 +1,12 @@
-
-
 <?php
 
-require_once("config.php");
-session_start();
+  require_once("config.php");
+  session_start();
 
-if(!isset($_SESSION['current_user_role']) && $_SESSION['current_user_role'] == "user"){
-  header("Location: index.php");
-  exit;
-}
+  if(!isset($_SESSION['current_user_role']) && $_SESSION['current_user_role'] == "user"){
+    header("Location: index.php");
+    exit;
+  }
 
 
      $query = "SELECT * FROM Recipe";
@@ -77,12 +75,6 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="Css/Styles.css">
   <title>Blog Page</title>
 </head>
 <body style="background:#ffcc00">
@@ -98,7 +90,7 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
 
       <form class="" action="CreateRecipe.php" method="post" enctype="multipart/form-data">
         <div class="card bg-secondary text-light mb-3">
-          <div class="card-body bg-dark">
+          <div class="card-body" style="background: #669fb2;">
             <div class="form-group">
               <label for="title"> <span class="FieldInfo"> Post Title: </span></label>
                <input class="form-control" type="text" name="recipename" id="recipename" placeholder="My New Recipe" value="">
@@ -117,11 +109,11 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
 
             <div class="form-group">
               <label for="cookingtime"> <span class="FieldInfo"> Cooking Time </span></label>
-               <input class="form-control" type="text" name="cookingtime" id="cookingtime" placeholder="20 minutes" value="">
+               <input class="form-control" type="text" name="cookingtime" id="cookingtime" placeholder="--- 20 minutes ---" value="">
             </div>
             <div class="form-group">
               <label for="preptime"> <span class="FieldInfo"> Prep Time </span></label>
-               <input class="form-control" type="text" name="preptime" id="preptime" placeholder="2 hours" value="">
+               <input class="form-control" type="text" name="preptime" id="preptime" placeholder="--- 2 hours ---" value="">
             </div>
             <div class="form-group">
               <label for="Post"> <span class="FieldInfo"> Ingredients </span></label>
@@ -133,10 +125,10 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
             </div>
             <div class="row">
               <div class="col-lg-6 mb-2">
-                <a href="Index.php" class="btn btn-warning btn-block">Cancel</a>
+                <a href="Index.php" class="btn btn-block" style="background:#caede3">Cancel</a>
               </div>
               <div class="col-lg-6 mb-2">
-                <button type="submit" name="Submit" class="btn btn-success btn-block">Create this recipe</button>
+                <button type="submit" name="Submit" class="btn btn-block" style="background:#dddb76">Create this recipe</button>
               </div>
             </div>
           </div>
@@ -152,9 +144,5 @@ if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST[
     </div>
 
     <!-- HEADER END -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
 </body>
 </html>

@@ -1,76 +1,52 @@
-
-
 <?php
-// global $ConnectingDB;
-// $sql = "SELECT * FROM Topics ORDER BY TopicID desc";
-// $stmt = $ConnectingDB->query($sql);
-// while ($DataRows = $stmt->fetch()) {
-//   $TopicId = $DataRows["TopicID"];
-//   $TopicName=$DataRows["Topic"];
-// }
-require_once("config.php");
-session_start();
-    // require('connect.php');
-    $userid = $_SESSION['current_user_id'];
-     // SQL is written as a String.
-     $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
+  require_once("config.php");
+  session_start();
 
-     // A PDO::Statement is prepared from the query.
-     $statement = $ConnectingDB->prepare($query);
-
-     // Execution on the DB server is delayed until we execute().
-     $statement->execute(); 
-
+  $userid = $_SESSION['current_user_id'];
+  $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
+  
+  // $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) WHERE UserID = $userid";
+  $statement = $ConnectingDB->prepare($query);
+  $statement->execute(); 
  ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="Css/Styles.css">
   <title>Blog Page</title>
 </head>
 <body>
     <?php include('basic.html')?>
-
     <!-- HEADER -->
     <div class="container">
       <div class="row mt-4">
-
         <!-- Main Area Start-->
+        <div class="col-sm-12">
+          </br>
+          <?php while ($row = $statement->fetch()): ?>
+            <h3 class="card-header text-light" style="background:#4d675a">
+              <?= $row['RecipeName']?>
+              <a class="card-header text-light" href="EditRecipe.php?id=<?=($row['RecipeID'])?>">          edit</a>
 
+            </h3>
+            <div  class="card-body border border-danger mb-4" style="background:#f9f7f1 ">
+              <p>
+              <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
+              <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
+              </p>
 
-        <?php while ($row = $statement->fetch()): ?>
-          <div class="container">
-        <div class="row mt-4">
-            <h4><?= $row['RecipeName'] ?></h4></br>
-            <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
-            <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
-            <a href="EditRecipe.php?id=<?=($row['RecipeID'])?>">edit</a>
-            <p>Ingredients: <?= $row['Ingredients'] ?></p></br>
-            <p>Steps: <?= $row['Steps'] ?></p></br>
-          </div>
-        </div>        
-        <?php endwhile ?>
-        <!-- Main Area End-->
-
-
-
+              <p>
+                <label>Ingredients: </label><br>
+                <?= $row['Ingredients'] ?></br></br>
+                <label>Steps: </label><br>
+                <?= $row['Steps'] ?></br>
+              </p>
+            </div>
+            <?php endwhile ?>    
+          </div>   
+        </div>
     </div> 
-
     </div>
-
     <!-- HEADER END -->
-
-
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
 </body>
 </html>
