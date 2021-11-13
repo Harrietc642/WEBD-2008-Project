@@ -1,4 +1,10 @@
 <?php
+/*
+Name: Harriet Chiu
+Date: November 10, 2021
+Course: Web Development 2
+Topic: Project 
+*/
 require_once("config.php");
 
  $query_top_recipe = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE RecipeID = 11";

@@ -1,9 +1,10 @@
 <!-----------------
-    Name: Group 4
-    Date: 2021-09-22
-    Course: WEBD-2008 (213758)
-    Purpose: Makes sure that the changes/delete request made is valid. 
-    A3  
+/*
+Name: Harriet Chiu
+Date: November 10, 2021
+Course: Web Development 2
+Topic: Project 
+*/
 ------------------->
 <?php
   require_once("config.php");

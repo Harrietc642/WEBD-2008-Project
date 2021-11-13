@@ -1,4 +1,10 @@
 <?php 
+/*
+Name: Harriet Chiu
+Date: November 10, 2021
+Course: Web Development 2
+Topic: Project 
+*/
 require_once("config.php");
 session_start();
 $id = $_GET['id'];
