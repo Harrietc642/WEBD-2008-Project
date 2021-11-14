@@ -98,6 +98,7 @@ Topic: Project
                   </div>
                   <!-- Cuisine Type Edit Ends -->
                   <div class="row"><!--  buttons series starts -->
+                   <input type="hidden" name="id" value="<?=$_GET['id'] ?>" />
                     <div class="col-lg-4 mb-2">
                       <a href="MyRecipe.php" class="btn btn-block" style="background:#caede3">Cancel</a>
                     </div>

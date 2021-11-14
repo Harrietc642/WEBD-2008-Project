@@ -10,50 +10,49 @@ Topic: Project
   require_once("config.php");
   session_start();
   $userid = $_SESSION['current_user_id'];
-  $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
+$id = $_POST['id'];
+  // // All associated recipes
+  // $query = "SELECT * FROM Recipe WHERE CuisineID = $currentCuisineid";
+  // // $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
+  // $statement_associated_recipes = $ConnectingDB->prepare($query);
+  // $statement_associated_recipes->execute(); 
+  // $row_associated_recipes = $statement_associated_recipes->fetch();
+  // $cuisine_wish_to_delete = $row_associated_recipes['RecipeID'];
+  
+    $query = "SELECT * FROM Cuisines JOIN Users using(UserID) WHERE UserID = $userid";
   
   // $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) WHERE UserID = $userid";
   $statement = $ConnectingDB->prepare($query);
   $statement->execute(); 
   // while ($row = $statement->fetch()): 
   $row = $statement->fetch();
-//  $id = $row['RecipeID'];
-  $id = $_POST['id'];
-  
+  //$id = $row['CuisineID'];
+//$id = $_GET['id'];
+
   if ($_POST['command'] == 'Delete') {
-        // $id =$row['RecipeID'];
+       // $id =$row['CuisineID'];
         // $id = $_GET['id'];
-        $query_delete_recipe = "DELETE FROM Recipe WHERE RecipeID = $id";
-        $statement_delete = $ConnectingDB->prepare($query_delete_recipe);
+        $query_delete_asso_recipe = "DELETE FROM Cuisines WHERE CuisineID = $id";
+        $statement_delete = $ConnectingDB->prepare($query_delete_asso_recipe);
         $statement_delete->execute();
   }
   
   if ($_POST['command'] == 'Update') {
-        // $id =$row['RecipeID'];
-        $recipename = filter_input(INPUT_POST, 'recipename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $cookingtime = filter_input(INPUT_POST, 'cookingtime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $preptime = filter_input(INPUT_POST, 'preptime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $ingredients = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $steps = filter_input(INPUT_POST, 'steps', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $cuisineid = filter_input(INPUT_POST, 'cuisineid', FILTER_SANITIZE_NUMBER_INT);
+        // $id =$row['CuisineID'];
+    //$id = $_GET['id'];
+        $cuisinename = filter_input(INPUT_POST, 'cuisinename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         // $query_update_recipe = "DELETE FROM Recipe WHERE RecipeID = $id";
-        $query_update_recipe = "UPDATE Recipe SET RecipeName = :recipename, PrepTime = :preptime, CookingTime = :cookingtime, Ingredients = :ingredients, Steps = :steps, CuisineID = :cuisineid WHERE RecipeID = $id";
+        $query_update_cuisine = "UPDATE Cuisines SET CuisineName = :cuisinename WHERE CuisineID = $id";
 
 //          $statement_update = $ConnectingDB->prepare($query1);
-        $statement_update = $ConnectingDB->prepare($query_update_recipe);
+        $statement_update = $ConnectingDB->prepare($query_update_cuisine);
 
-            $statement_update->bindValue(':recipename', $recipename);
-            $statement_update->bindValue(':cookingtime', $cookingtime);
-            $statement_update->bindValue(':preptime', $preptime);
-            $statement_update->bindValue(':ingredients', $ingredients);
-            $statement_update->bindValue(':steps', $steps);
-            //$statement_update->bindValue(':userid', $userid);
-            $statement_update->bindValue(':cuisineid', $cuisineid);
+            $statement_update->bindValue(':cuisinename', $cuisinename);
         $statement_update->execute();
   }
 
-  header("Location: MyRecipe.php");
+  header("Location: Cuisine.php");
   exit;
 
 

@@ -42,7 +42,7 @@ $id = $_GET['id'];
    <?php while ($row = $statement_cuisine_type->fetch()): ?>
             <h3 class="card-header text-light" style="background:#4d675a">
               <?= $row['RecipeName']?>
-              <a class="card-header text-light" href="EditRecipe.php?id=<?=($row['RecipeID'])?>">          edit</a>
+              <!-- <a class="card-header text-light" href="EditRecipe.php?id=<?=($row['RecipeID'])?>">          edit</a> -->
 
             </h3>
             <div  class="card-body border border-danger mb-4" style="background:#f9f7f1 ">

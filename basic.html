@@ -49,20 +49,31 @@ Topic: Project
           <li class="nav-item">
             <a href="recipebycuisine.php" class="nav-link">RecipesByCuisines</a>
           </li>
-          <li class="nav-item">
-            <a href="AdvancedSearch.php" class="nav-link">Search</a>
-          </li>
+<!--           <li class="nav-item">
+            <a href="Search.php" class="nav-link">Search</a>
+          </li> -->
           <!-- everyone can see ends [Home, all recipes, and search]-->
 
           <!-- only user and admin can see starts [My Post]-->
           <?php if(isset($_SESSION['current_username'])) : ?>
             <li class="nav-item">
-              <a href="MyRecipe.php" class="nav-link">My Post</a>
+              <a href="MyRecipe.php" class="nav-link">MyPost</a>
             </li>
           <?php endif ?>  
           <!-- only user and admin can see ends in list [My Post]-->
         </ul> <!-- <ul class="navbar-nav mr-auto">  -->
-
+          <?php if(isset($_SESSION['current_username']) && $_SESSION['current_user_role'] == "admin") : ?>
+            <form class="form-inline d-none d-sm-block" action="cuisine.php">
+              <div class="form-group col-lg-12">
+                <button  class="btn btn-primary" style="background: #b78763;" name="cuisine">Manage Cuisine</button>
+              </div>
+            </form>
+            <form class="form-inline d-none d-sm-block" action="AdminViewAllRecipe.php">
+              <div class="form-group col-lg-12">
+                <button  class="btn btn-primary" style="background: #b78763;" name="cuisine">Manage Recipe</button>
+              </div>
+            </form>
+          <?php endif ?>  
           <!-- only user and admin can see button starts [Create Post, Logout]-->
           <?php if(isset($_SESSION['current_username'])) : ?>
             <!-- Create Post starts-->

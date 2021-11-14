@@ -9,9 +9,16 @@ Topic: Project
   session_start();
   // $userid = $_SESSION['current_user_id'];
 
-  $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) ORDER BY RecipeName ASC";
+  $query = "SELECT * FROM Cuisines ORDER BY CuisineName ASC";
   $statement = $ConnectingDB->prepare($query);
   $statement->execute(); 
+
+if(!isset($_SESSION['current_user_role']) && $_SESSION['current_user_role'] != "admin"){
+  header("Location: index.php");
+  exit;
+}
+
+
  ?>
 
 <!DOCTYPE html>
@@ -24,13 +31,18 @@ Topic: Project
     <!-- HEADER -->
     <div class="col-sm-12">
       </br>
-      <h4 style="color: #aa574b;">These recipes are ordered alphabetically</h4>
+      <h4 style="color: #aa574b;" class="text-center"> Cuisine Manager</h4>
 
     </div>
-        <div class="col-sm-12">
+        <div class="col-sm-10">
           </br>
+          <a class="card-header text-dark" href="InsertCuisine.php">Add New Cuisine Here</a><hr><hr><br>
+           <h6 style="color: #aa574b;">Create, Update or Delete the Cuisine Categories (A-Z)</h6></br>
           <?php while ($row = $statement->fetch()): ?>
-            <h3 class="card-header text-light" style="background:#4d675a"><?= $row['RecipeName']?></h3>  
+
+            <a class="card-header text-dark text-center"  href="EditCuisine.php?id=<?=($row['CuisineID'])?>"><?= $row['CuisineName'] ?></a>
+            <!-- <hr class=" col-sm-2"> -->
+<!--             <h3 class="card-header text-light" style="background:#4d675a"><?= $row['RecipeName']?></h3>  
             <div  class="card-body border border-danger mb-4" style="background:#f9f7f1">
               <p>
                 <small><?= $row['CuisineName'] ?></small>
@@ -47,11 +59,7 @@ Topic: Project
                 <label>Steps: </label><br>
                 <?= $row['Steps'] ?></br>
               </p>
-
-              <p>
-                <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
-              </p>
-            </div>
+            </div> -->
             <?php endwhile ?>
           </div>   
         </div>
