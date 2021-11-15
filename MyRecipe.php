@@ -7,7 +7,7 @@ Topic: Project
 */
   require_once("config.php");
   session_start();
-
+  require_once("imageprocess.php");
   $userid = $_SESSION['current_user_id'];
   $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
   
@@ -47,7 +47,11 @@ Topic: Project
                 <label>Steps: </label><br>
                 <?= $row['Steps'] ?></br>
               </p>
+               <p>
+                <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
+              </p>
             </div>
+
             <?php endwhile ?>    
           </div>   
         </div>

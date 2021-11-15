@@ -11,20 +11,34 @@ require_once("config.php");
 $query = "SELECT * FROM Users";
 $statement = $ConnectingDB->prepare($query);
 $statement->execute(); 
+///
 
+///
 if (isset($_POST['username']) && isset($_POST['password']))
 {
         if((strlen($_POST['username'])) >= 1 && (strlen($_POST['password'])) >= 1 && (!ctype_space($_POST['username'])) && (!ctype_space($_POST['password'])))
         {
+          // $username = $_POST['username'];
+          // $query1 = "SELECT * FROM Users WHERE Username = '$username'";
+          //   $statement1 = $ConnectingDB->prepare($query1);
+          //   $statement1->execute(); 
+          //   $row1 = $statement1->fetch();
+
 
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                      $query1 = "SELECT * FROM Users WHERE Username = '$username'";
+            $statement1 = $ConnectingDB->prepare($query1);
+            $statement1->execute(); 
+            $row1 = $statement1->fetch();
+
             // $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $confirmpassword = filter_input(INPUT_POST, 'confirmpassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $row = $statement->fetch();
 
-            if($password == $confirmpassword && $_POST['username'] !="ADMIN123"){
+
+            if($password == $confirmpassword && $_POST['username'] !="ADMIN123" &&  $row1 == false){
               $query_insert_user = "INSERT INTO Users (UserName, Password, Role) VALUES (:username, :password, :role)";
               $statement_insert_user = $ConnectingDB->prepare($query_insert_user);
 
@@ -39,10 +53,11 @@ if (isset($_POST['username']) && isset($_POST['password']))
                   header("Location: index.php");
                   exit;
               }
+
         }
         else
         {
-            header("Location: error.html");
+            header("Location: error.php");
             exit;
         }
             }

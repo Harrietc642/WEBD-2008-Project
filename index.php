@@ -7,7 +7,7 @@ Topic: Project
 */
 require_once("config.php");
 
- $query_top_recipe = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE RecipeID = 11";
+ $query_top_recipe = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE RecipeID = 1";
  $statement_top_recipe = $ConnectingDB->prepare($query_top_recipe);
  $statement_top_recipe->execute(); 
 
@@ -34,7 +34,7 @@ require_once("config.php");
           <h1 class="lead">Harriet's WEBD-2008 Project - RRC</h1>  
           <?php if(isset($_SESSION['current_username'])) : ?>              
             <div>
-               <a href="index.php"><?= 'Welcome Back! '. $_SESSION['current_username']. $_SESSION['current_user_id']?>    </a> 
+               <a href="index.php"><?= 'Welcome Back! '. $_SESSION['current_username']. ' (ID - '. $_SESSION['current_user_id'] . ')'?>    </a> 
             </div>
           <?php endif ?>  
         </div>

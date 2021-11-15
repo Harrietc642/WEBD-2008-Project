@@ -35,7 +35,8 @@ if (isset($_POST['username'])) {
                 exit;
               }  
               else{
-                echo "Incorrect Username or password, try again";
+                //echo "Incorrect Username or password, try again";
+                 header("Location: error.php");
               }     
             }
             else
