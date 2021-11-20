@@ -83,6 +83,15 @@ Topic: Project
                     <textarea class="form-control" id="steps" name="steps"  rows="8" cols="80"><?= $row['Steps']?></textarea>
                   </div>
                   <!-- Steps Time Edit Ends -->
+
+                                    <!-- Photo Edit Starts -->
+                  <div class="form-group">
+                    <p>  Current Image: <hr>          
+                      <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
+                    </p>
+                    
+                  </div>
+                  <!-- Photo Edit Ends -->
                   <?php endwhile ?>  <!--  everything except cuisine while loop ends-->
 
                   <!-- Cuisine Type Edit Starts -->
@@ -97,6 +106,9 @@ Topic: Project
                     </select>
                   </div>
                   <!-- Cuisine Type Edit Ends -->
+
+
+
                   <div class="row"><!--  buttons series starts -->
                    <input type="hidden" name="id" value="<?=$_GET['id'] ?>" />
                     <div class="col-lg-4 mb-2">

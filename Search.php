@@ -7,12 +7,6 @@ Topic: Project
 */
   require_once("config.php");
   session_start();
-// // && $_SESSION['current_user_role'] == "user"
-//   if(!isset($_SESSION['current_user_role'])){
-//     header("Location: index.php");
-//     exit;
-//   }
-
 
      $query = "SELECT * FROM Recipe";
 
@@ -25,12 +19,8 @@ Topic: Project
       $statement_cuisine->execute();
 
 
-// isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps'])
-
   if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps']) && (!empty($_POST['recipename'])))
   {
-  // if ((strlen($_POST['recipename'])) >= 1 && (strlen($_POST['preptime'])) >= 1 && (strlen($_POST['ingredients'])) >= 1 && (strlen($_POST['steps'])) >= 1 && (strlen($_POST['cookingtime'])) >= 1 && (!ctype_space($_POST['recipename'])) && (!ctype_space($_POST['cookingtime'])) && (!ctype_space($_POST['preptime'])) && (!ctype_space($_POST['ingredients'])) && (!ctype_space($_POST['steps'])))
-  // {
 
             $recipename = filter_input(INPUT_POST, 'recipename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $cookingtime = filter_input(INPUT_POST, 'cookingtime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -53,25 +43,21 @@ Topic: Project
             $statement->bindValue(':steps', $steps);
             $statement->bindValue(':userid', $userid);
             $statement->bindValue(':cuisineid', $cuisineid);
-  
+
               if ($statement->execute())
             {
                 header("Location: Recipe.php");
                 exit;
             }
-        
+
           else
           {
-            echo "All fields required. Try again!";
-            header("Location: CreateRecipe.php");
-                
+            echo "Enter Keyword and try again!";
+            header("Location: showSearch.php");
+
             exit;
           }
   }
-  // else
-  // {
-  //   echo "all fields required";
-  // }
  ?>
 
 <!DOCTYPE html>
@@ -90,7 +76,7 @@ Topic: Project
   <div class="row">
     <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
 
-      <form class="" action="CreateRecipe.php" method="post" enctype="multipart/form-data">
+      <form class="" action="showSearch.php" method="post" enctype="multipart/form-data">
 
         <div class="card bg-secondary text-light mb-3" style="background: #669fb2;">
             <h3 class="text-center">Find your favourite recipe here</h3>
@@ -101,7 +87,7 @@ Topic: Project
             <div class="form-group">
               <label for="title"> <span class="FieldInfo"> Recipe Name: </span></label>
               <input type="hidden" name="keywordrecipe" value="" /><!-- <?=$_GET['id'] ?> -->
-               <input class="form-control" type="text" name="recipename" id="recipename" placeholder="Keyword" value="">
+               <input class="form-control" type="text" name="keyword" id="keyword" placeholder="Keyword" value="">
             </div>
 
             <div class="form-group">
@@ -137,4 +123,4 @@ Topic: Project
 
     <!-- HEADER END -->
 </body>
-</html>
+</html> 

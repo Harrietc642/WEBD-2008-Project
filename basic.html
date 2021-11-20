@@ -49,15 +49,18 @@ Topic: Project
           <li class="nav-item">
             <a href="recipebycuisine.php" class="nav-link">RecipesByCuisines</a>
           </li>
-<!--           <li class="nav-item">
+          <li class="nav-item">
             <a href="Search.php" class="nav-link">Search</a>
-          </li> -->
+          </li>
           <!-- everyone can see ends [Home, all recipes, and search]-->
 
           <!-- only user and admin can see starts [My Post]-->
           <?php if(isset($_SESSION['current_username'])) : ?>
             <li class="nav-item">
               <a href="MyRecipe.php" class="nav-link">MyPost</a>
+            </li>
+            <li class="nav-item">
+              <a href="MyGallery.php" class="nav-link">MyGallery</a>
             </li>
           <?php endif ?>  
           <!-- only user and admin can see ends in list [My Post]-->

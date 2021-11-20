@@ -13,84 +13,6 @@ Topic: Project
 
 
 
-
-
-    // function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
-    //    $current_folder = dirname(__FILE__);
-
-    //    $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
-
-    //    return join(DIRECTORY_SEPARATOR, $path_segments);
-    // }
-
-
-    // function file_is_an_image($temporary_path, $new_path) {
-    //     $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
-    //     $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
-        
-    //     $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
-    //     $actual_mime_type = getimagesize($temporary_path)['mime'];
-    //     $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
-    //     $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
-
-        
-    //     return $file_extension_is_valid && $mime_type_is_valid;
-    // }
-
-    // $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
-    // $upload_error_detected = isset($_FILES['image']) && ($_FILES['image']['error'] > 0);
-
-
-
-    // if ($image_upload_detected) { 
-    //     $image_filename        = $_FILES['image']['name']; 
-    //     $temporary_image_path  = $_FILES['image']['tmp_name'];
-    //     $new_image_path        = file_upload_path($image_filename);
-    //     $ToString_Original_Name =  strval($_FILES['image']['name']);
-
-    //     if (file_is_an_image($temporary_image_path, $new_image_path)) {
-
-    //         if(move_uploaded_file($temporary_image_path, $new_image_path)){
-    //           $image = new ImageResize($_FILES['image']['name']);
-    //           $image->resize(350,350);
-    //           $resized_new_image = pathinfo($_FILES['image']['name'], PATHINFO_FILENAME).'_medium'.pathinfo(($_FILES['image']['name']), PATHINFO_EXTENSION);
-    //           $image->save('uploads/'. $resized_new_image);
-            
-    //         }
-
-    //         // $actual_file_extension   = pathinfo($new_image_path, PATHINFO_EXTENSION);
-
-
-    //         // $ToString_Original_Name =  strval($_FILES['image']['name']);
-    //         // $ToString_Original_Name = substr($ToString_Original_Name, 0, strrpos($ToString_Original_Name, '.'));
-    //         // $ToString_Original_Name = 'uploads/' . $ToString_Original_Name;
-    //         // $imageMax400 = new ImageResize($new_image_path);
-    //         // $imageMax400->resizeToWidth(400);
-            
-    //         // $ToString_Orginal_Ext = strval($_FILES['image']['type']);
-    //         // $new_max400_fileName = $ToString_Original_Name. '_medium.'. $actual_file_extension;
-    //         // $imageMax400->save($new_max400_fileName);
-
-    //     //    $resized_new_image = pathinfo($_FILES['image']['name'], PATHINFO_FILENAME).'_medium'.pathinfo($_FILES['image']['name']), PATHINFO_EXTENSION);
-            
-
-    //         // Resize to Max Width 50px
-    //         // $imageMax50 = new ImageResize($new_image_path);
-    //         // $imageMax50->resizeToWidth(50);
-           
-    //         // $ToString_Orginal_Ext = strval($_FILES['image']['type']);
-            
-    //         // $new_max50_fileName = $ToString_Original_Name . '_thumbnail.' . $actual_file_extension;
-    //         // $imageMax50->save($new_max50_fileName);
-
-
-
-        // }s
-    // }
-    // Image Processing ends
-
-
-
 // && $_SESSION['current_user_role'] == "user"
   if(!isset($_SESSION['current_user_role'])){
     header("Location: index.php");
@@ -211,8 +133,8 @@ Topic: Project
             </div>
             <div class="form-group">
               <div class="custom-file">
-         <label for='image'>Image Filename:</label>
-         <input type='file' name='image' id='image'>
+                <label for='image'>Image Filename:</label>
+                <input type='file' name='image' id='image'>
          <!-- <input type='submit' name='submit' value='Upload Image'> -->
               </div>
             </div>

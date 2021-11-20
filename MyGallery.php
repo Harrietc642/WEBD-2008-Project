@@ -29,31 +29,19 @@ Topic: Project
         <!-- Main Area Start-->
         <div class="col-sm-12">
           </br>
+
           <?php while ($row = $statement->fetch()): ?>
-            <h3 class="card-header text-light" style="background:#4d675a">
-              <?= $row['RecipeName']?>
-              <a class="card-header text-light" href="EditRecipe.php?id=<?=($row['RecipeID'])?>">          edit</a>
-
-            </h3>
-            <div  class="card-body border border-danger mb-4" style="background:#f9f7f1 ">
-              <p>
-              <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
-              <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
-              </p>
-
-              <p>
-                <label>Ingredients: </label><br>
-                <?= $row['Ingredients'] ?></br></br>
-                <label>Steps: </label><br>
-                <?= $row['Steps'] ?></br>
-              </p>
-              <?php if(!empty($row['img'])) : ?>
+             <?php if(!empty($row['img'])) : ?>
+            <div class="card-body border border-danger mb-4" style="background:#f9f7f1 ">
+              <a class="card-header text-dark col-sm-10 mb-4" style="background:#f9f7f1 " href="EditPhoto.php?id=<?=($row['RecipeID'])?>">Delete</a>
+              <br>
+              
                <p>
                 <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
+                 
               </p>
-              <?php endif ?>
             </div>
-
+            <?php endif ?>
             <?php endwhile ?>    
           </div>   
         </div>
