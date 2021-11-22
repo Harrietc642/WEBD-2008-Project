@@ -46,20 +46,8 @@
             $ToString_Orginal_Ext = strval($_FILES['image']['type']);
             $new_max400_fileName = $ToString_Original_Name. '_medium.'. $actual_file_extension;
             $imageMax400->save($new_max400_fileName);
-
-            // if (condition) {
-            //   // try here tomorrow
-            // }
  
         }
-        // if (file_is_an_image_or_a_pdf($temporary_image_path, $new_image_path) == false) {
-        //   // code...
-        //   echo "upload fail, try again!";
-        // }
-        // {
-        //   echo "upload fail, try again!";
-
-        // }
     }
 
 ?>

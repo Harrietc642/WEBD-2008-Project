@@ -86,8 +86,12 @@ Topic: Project
 
                                     <!-- Photo Edit Starts -->
                   <div class="form-group">
-                    <p>  Current Image: <hr>          
+                    <p>  Current Image:    
+                    <?php if(!empty($row['img'])) : ?>      
                       <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
+                      <?php else :?>
+                        None
+                       <?php endif ?>
                     </p>
                     
                   </div>

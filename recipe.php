@@ -47,10 +47,11 @@ Topic: Project
                 <label>Steps: </label><br>
                 <?= $row['Steps'] ?></br>
               </p>
-
+              <?php if(!empty($row['img'])) : ?>
               <p>
                 <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
               </p>
+              <?php endif ?>
             </div>
             <?php endwhile ?>
           </div>   
