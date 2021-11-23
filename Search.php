@@ -95,6 +95,7 @@ Topic: Project
               <select class="form-control" id="cuisineid" name="cuisineid">
                 <?php while ($row = $statement_cuisine->fetch()): ?>
                   <div>
+                    <!-- <input type="hidden" name="cuisinetype" value="<?=$_GET['cuisinetype'] ?>"> -->
                     <option value="<?= $row['CuisineID'] ?>"><?= $row['CuisineName'] ?></option>
                   </div>        
                 <?php endwhile ?>

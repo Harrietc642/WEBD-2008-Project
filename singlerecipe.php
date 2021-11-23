@@ -8,7 +8,13 @@ Topic: Project
   require_once("config.php");
   session_start();
 
-  $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) ORDER BY RecipeName ASC";
+  $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+  if(!$id)
+  {
+    header('location:recipe.php');
+    exit;
+  }
+  $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) WHERE RecipeID = $id";
   $statement = $ConnectingDB->prepare($query);
   $statement->execute(); 
  ?>
@@ -34,6 +40,17 @@ Topic: Project
               <p>
                 <small><?= $row['CuisineName'] ?></small>
                 <small>-  Authored by: <?= $row['Username'] ?></small>
+              </p>
+              <p>
+              <small>Cooking Time: <?= $row['CookingTime'] ?></small></br>
+              <small>Prep Time: <?= $row['PrepTime'] ?></small></br>
+              </p>
+
+              <p>
+                <label>Ingredients: </label><br>
+                <?= $row['Ingredients'] ?></br></br>
+                <label>Steps: </label><br>
+                <?= $row['Steps'] ?></br>
               </p>
               <?php if(!empty($row['img'])) : ?>
               <p>
