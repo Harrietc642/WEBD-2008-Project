@@ -1,0 +1,12 @@
+RewriteEngine on
+RewriteRule ^home?$ index.php
+RewriteRule ^register?$ register.php
+RewriteRule ^login?$ Login.php
+RewriteRule ^search?$ Search.php
+RewriteRule ^searchresult?$ showSearch.php
+RewriteRule ^allrecipes?$ recipe.php
+RewriteRule ^recipebycuisine?$ recipebycuisine.php
+RewriteRule ^myrecipe?$ MyRecipe.php
+RewriteRule ^mygallery?$ MyGallery.php
+RewriteRule ^singlerecipe/([0-9]+) singlerecipe.php?id=$1
+RewriteRule ^addrecipe?$ CreateRecipe.php

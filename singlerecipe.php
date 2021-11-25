@@ -11,12 +11,13 @@ Topic: Project
   $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
   if(!$id)
   {
-    header('location:recipe.php');
+    header('location:/wd2/Project/Official/allrecipes');
     exit;
   }
   $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID) WHERE RecipeID = $id";
   $statement = $ConnectingDB->prepare($query);
   $statement->execute(); 
+
  ?>
 
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ Topic: Project
         <div class="col-sm-12">
           </br>
           <?php while ($row = $statement->fetch()): ?>
-            <a class="card-header text-light" style="background:#4d675a" href="singlerecipe.php?id=<?= $row['RecipeID']?> "><?= $row['RecipeName']?></a>  
+            <a class="card-header text-light" style="background:#4d675a" href="/wd2/Project/Official/singlerecipe/<?= $row['RecipeID']?> "><?= $row['RecipeName']?></a>  
             <div  class="card-body border border-danger mb-4" style="background:#f9f7f1">
               <p>
                 <small><?= $row['CuisineName'] ?></small>
@@ -53,9 +54,9 @@ Topic: Project
                 <?= $row['Steps'] ?></br>
               </p>
               <?php if(!empty($row['img'])) : ?>
-              <p>
+<!--               <p>
                 <img src=" uploads/<?= $row['img'] ?>" alt=" <?= $row['img'] ?>">
-              </p>
+              </p> -->
               <?php endif ?>
             </div>
             <?php endwhile ?>

@@ -7,23 +7,42 @@ Topic: Project
 */
   require_once("config.php");
   session_start();
-  $keyword = '';
 
+  // Testing
+// echo $_POST['keyword'];
+ //echo $_POST['cuisinetype'];
 
+  $keyword = filter_input(INPUT_GET, 'keyword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+  $cuisine_type = filter_input(INPUT_GET, 'cuisinetype', FILTER_VALIDATE_INT);
   $query = "SELECT * FROM Recipe JOIN Users using(UserID) JOIN Cuisines using(CuisineID)";
   $statement = $ConnectingDB->prepare($query);
   $statement->execute(); 
 
   //$row = $statement->fetch();
-  if(!empty($_POST['keyword'])){
-    $keyword =$_POST['keyword'];
-     $cuisine_type = $_GET['cuisinetype'];
-      $query_search = "SELECT * FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype";
-      $statement_search = $ConnectingDB->prepare($query_search);
-      $statement_search->bindValue(':keyword', $keyword);
-       $statement_search->bindValue(':cuisinetype', $cuisine_type);
-      $statement_search->execute();
+  if(!$keyword){
+    header('location:/wd2/Project/Official/search');
+    exit;
   }
+
+  if(!$page)
+  {
+    $page = 1;
+  }
+  //$cuisine_type = $_GET['cuisinetype'];
+
+  $query_search = "SELECT * FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype LIMIT ".(($page -1) *2).",2";
+  $statement_search = $ConnectingDB->prepare($query_search);
+  $statement_search->bindValue(':keyword', '%'.$keyword.'%');
+   $statement_search->bindValue(':cuisinetype', $cuisine_type);
+  $statement_search->execute();
+
+      // pagination
+      // $page_no = "SELECT COUNT FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype";
+      // if($page_no > 1){
+
+      // }
+      //$searchResult = $statement_search->fetchAll();
  ?>
 
 <!DOCTYPE html>
@@ -36,7 +55,7 @@ Topic: Project
     <!-- HEADER -->
     <div class="col-sm-12">
       </br>
-      <h4 style="color: #aa574b;">These recipes are ordered alphabetically</h4>
+      <h4 style="color: #aa574b;">Search Result</h4>
 
     </div>
         <div class="col-sm-12">
@@ -48,7 +67,7 @@ Topic: Project
               <div  class="card-body border border-danger mb-4" style="background:#f9f7f1">
                 <p>
                   <small><?= $row1['CuisineName'] ?></small>
-                  <small>-  Authored by: <?= $row1['Username'] ?></small>
+                 
                 </p>
                 <p>
                   <small>Cooking Time: <?= $row1['CookingTime'] ?></small></br>
@@ -71,8 +90,8 @@ Topic: Project
             <!-- pagination starts  -->
               <ul class="pagination">
                 <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=1">1</a></li>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=2">2</a></li>
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
               </ul>
