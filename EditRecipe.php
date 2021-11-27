@@ -9,7 +9,8 @@ Topic: Project
   session_start();
 
   $userid = $_SESSION['current_user_id'];
-  $id = $_GET['id'];
+     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+  //$id = $_GET['id'];
   // echo $id;
   $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid AND RecipeID = $id";
 
@@ -36,6 +37,15 @@ Topic: Project
 <html lang="en">
 <head>
   <title>Blog Page</title>
+    <script type="text/javascript" src="tinymce/tinymce.min.js"></script>
+  <script>
+    tinymce.init({
+      selector:'#ingredients'
+    });
+    tinymce.init({
+      selector:'#steps'
+    });
+  </script>
 </head>
 <body>
   <?php include('basic.html')?>

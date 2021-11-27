@@ -9,6 +9,7 @@ Topic: Project
   session_start();
   require_once("imageprocess.php");
 
+
  
 
 
@@ -43,47 +44,6 @@ Topic: Project
 
 // isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps'])
 
-  if (isset($_POST['recipename']) && isset($_POST['cookingtime']) && isset($_POST['preptime']) && isset($_POST['ingredients'])&& isset($_POST['steps']) && (!empty($_POST['recipename'])))
-  {
-
-            $recipename = filter_input(INPUT_POST, 'recipename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $cookingtime = filter_input(INPUT_POST, 'cookingtime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            $preptime = filter_input(INPUT_POST, 'preptime', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $ingredients = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $steps = filter_input(INPUT_POST, 'steps', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $cuisineid = filter_input(INPUT_POST, 'cuisineid', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            // $restid = 1;
-            $userid = $_SESSION['current_user_id'];
-           // $img = $$new_max400_fileName;
-
-            $query = "INSERT INTO Recipe (RecipeName, PrepTime, CookingTime, Ingredients, Steps, UserID, CuisineID, img) VALUES (:recipename, :cookingtime, :preptime, :ingredients, :steps, :userid, :cuisineid, :img)";
-            $statement = $ConnectingDB->prepare($query);
-
-            //  Bind values to the parameters
-            $statement->bindValue(':recipename', $recipename);
-            $statement->bindValue(':cookingtime', $cookingtime);
-            $statement->bindValue(':preptime', $preptime);
-            $statement->bindValue(':ingredients', $ingredients);
-            $statement->bindValue(':steps', $steps);
-            $statement->bindValue(':userid', $userid);
-            $statement->bindValue(':cuisineid', $cuisineid);
-            $new_max400_fileName_project = strstr("$new_max400_fileName","/"); 
-            $statement->bindValue(':img', $new_max400_fileName_project);
-  
-              if ($statement->execute())
-            {
-                header("Location: /wd2/Project/Official/myrecipe");
-                exit;
-            }
-           else
-          {
-            echo "All fields required. Try again!";
-            //header("Location: /wd2/Project/Official/addrecipe");
-                
-            exit;
-          }
-  }
 
  ?>
 
@@ -91,6 +51,15 @@ Topic: Project
 <html lang="en">
 <head>
   <title>Blog Page</title>
+  <script type="text/javascript" src="tinymce/tinymce.min.js"></script>
+  <script>
+    tinymce.init({
+      selector:'#ingredients'
+    });
+    tinymce.init({
+      selector:'#steps'
+    });
+  </script>
 </head>
 <body>
 <?php include('basic.html')?>
@@ -103,17 +72,13 @@ Topic: Project
   <div class="row">
     <div class="offset-lg-1 col-lg-10" style="min-height:400px;">
 
-      <form class="" action="CreateRecipe.php" method="post" enctype="multipart/form-data">
+      <form class="" action="CreateRecipeProcess.php" method="post" enctype="multipart/form-data">
         <div class="card bg-secondary text-light mb-3">
-          <div class="card-body" style="background: #669fb2;">
-<!--             <?php if(empty($_POST['recipename'])) : ?>
-                <p>you must enter recipe name</p>
-              <?php endif ?> -->
-              <!-- <p><?= "{$error}"?></p> -->
+          <div class="card-body" style="background: #669fb2;">     
             <div class="form-group">
               <label for="title"> <span class="FieldInfo"> Post Title: </span></label>
                <input class="form-control" type="text" name="recipename" id="recipename" placeholder="My New Recipe" value="">
-               <p>You must enter the post title</p>
+      
             </div>
 
             <div class="form-group">

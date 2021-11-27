@@ -18,7 +18,8 @@ Topic: Project
   // while ($row = $statement->fetch()): 
   $row = $statement->fetch();
 //  $id = $row['RecipeID'];
-  $id = $_GET['id'];
+  //$id = $_GET['id'];
+     $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
   // $img = $row['img'];
   $img = '';
   $query_img_delete = "UPDATE Recipe SET img = :img WHERE RecipeID = $id";

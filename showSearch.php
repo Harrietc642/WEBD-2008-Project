@@ -29,6 +29,9 @@ Topic: Project
   {
     $page = 1;
   }
+  
+  //echo $page;
+  //echo $page +1;
   //$cuisine_type = $_GET['cuisinetype'];
 
   $query_search = "SELECT * FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype LIMIT ".(($page -1) *2).",2";
@@ -37,12 +40,13 @@ Topic: Project
    $statement_search->bindValue(':cuisinetype', $cuisine_type);
   $statement_search->execute();
 
-      // pagination
-      // $page_no = "SELECT COUNT FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype";
-      // if($page_no > 1){
-
-      // }
-      //$searchResult = $statement_search->fetchAll();
+  // pagination
+    $page_no_count = "SELECT * FROM Recipe JOIN Cuisines using(CuisineID) WHERE RecipeName LIKE :keyword AND CuisineID = :cuisinetype";
+    $statement_no_count = $ConnectingDB->prepare($page_no_count);
+    $statement_no_count->bindValue(':keyword', '%'.$keyword.'%');
+    $statement_no_count->bindValue(':cuisinetype', $cuisine_type);
+    $statement_no_count->execute();
+    $searchResult_count = $statement_no_count->rowCount();
  ?>
 
 <!DOCTYPE html>
@@ -89,17 +93,21 @@ Topic: Project
             <?php endwhile ?>
             <!-- pagination starts  -->
               <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=1">1</a></li>
+                <?php if($searchResult_count > 2) : ?>
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=2">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <?php endif ?> 
+                <?php if($searchResult_count > 4) : ?>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=3">3</a></li>
+                <?php endif ?> 
+                                <?php if($searchResult_count > 6) : ?>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=4">4</a></li>
+                <?php endif ?> 
+                                                <?php if($searchResult_count > 8) : ?>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=5">5</a></li>
+                <?php endif ?> 
               </ul>
-            <!-- pagination ends -->
-                          
-                
-                
-              
+            <!-- pagination ends --> 
           </div>   
         </div>
     <!-- HEADER END -->

@@ -10,8 +10,10 @@ require_once("config.php");
 
 if (isset($_POST['username'])) {
           if  (isset($_POST['username']) && isset($_POST['password'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            //$username = $_POST['username'];
+            //$password = $_POST['password'];
 
             $query = "SELECT * FROM Users WHERE Username = '$username'";
 

@@ -10,7 +10,8 @@ Topic: Project
   require_once("config.php");
   session_start();
   $userid = $_SESSION['current_user_id'];
-$id = $_POST['id'];
+//$id = $_POST['id'];
+ $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
   // // All associated recipes
   // $query = "SELECT * FROM Recipe WHERE CuisineID = $currentCuisineid";
   // // $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid";
@@ -28,8 +29,8 @@ $id = $_POST['id'];
   $row = $statement->fetch();
   //$id = $row['CuisineID'];
 //$id = $_GET['id'];
-
-  if ($_POST['command'] == 'Delete') {
+$command = filter_input(INPUT_POST, 'command', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  if ($command == 'Delete') {
        // $id =$row['CuisineID'];
         // $id = $_GET['id'];
         $query_delete_asso_recipe = "DELETE FROM Cuisines WHERE CuisineID = $id";
@@ -37,7 +38,7 @@ $id = $_POST['id'];
         $statement_delete->execute();
   }
   
-  if ($_POST['command'] == 'Update') {
+  if ($command == 'Update') {
         // $id =$row['CuisineID'];
     //$id = $_GET['id'];
         $cuisinename = filter_input(INPUT_POST, 'cuisinename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

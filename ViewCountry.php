@@ -7,7 +7,8 @@ Topic: Project
 */
 require_once("config.php");
 session_start();
-$id = $_GET['id'];
+// $id = $_GET['id'];
+$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
   $query_cuisine_type = "SELECT * FROM Cuisines JOIN Recipe using(CuisineID) WHERE CuisineID = $id ORDER BY CuisineName ASC";
   $statement_cuisine_type = $ConnectingDB->prepare($query_cuisine_type);

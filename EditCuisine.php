@@ -26,7 +26,8 @@ Topic: Project
 
 
   $userid = $_SESSION['current_user_id'];
-  $id = $_GET['id']; // current cuisine
+   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+  //$id = $_GET['id']; // current cuisine
 
     $query2 = "SELECT * FROM Cuisines WHERE CuisineID = $id AND UserID = $userid";
   $statement_cuisine = $ConnectingDB->prepare($query2);
