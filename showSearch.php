@@ -93,6 +93,7 @@ Topic: Project
             <?php endwhile ?>
             <!-- pagination starts  -->
               <ul class="pagination">
+                <!-- previous and next -->
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=1">1</a></li>
                 <?php if($searchResult_count > 2) : ?>
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=2">2</a></li>
