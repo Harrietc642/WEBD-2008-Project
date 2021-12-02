@@ -1,4 +1,4 @@
-RewriteEngine on
+
 RewriteRule ^home?$ index.php
 RewriteRule ^register?$ register.php
 RewriteRule ^login?$ Login.php
@@ -10,3 +10,4 @@ RewriteRule ^myrecipe?$ MyRecipe.php
 RewriteRule ^mygallery?$ MyGallery.php
 RewriteRule ^singlerecipe/([0-9]+) singlerecipe.php?id=$1
 RewriteRule ^addrecipe?$ CreateRecipe.php
+
