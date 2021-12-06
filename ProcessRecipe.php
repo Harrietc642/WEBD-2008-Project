@@ -68,7 +68,7 @@ Topic: Project
     }
     else
     {
-      $error_message = "Post title required. Try again!";
+      $error_message = "Post Title required. Try again!";
     }
 
 
