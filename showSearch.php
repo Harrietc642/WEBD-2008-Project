@@ -103,8 +103,14 @@ Topic: Project
                                 <?php if($searchResult_count > 6) : ?>
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=4">4</a></li>
                 <?php endif ?> 
-                                                <?php if($searchResult_count > 8) : ?>
+                <?php if($searchResult_count > 8) : ?>
                 <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=5">5</a></li>
+                <?php endif ?> 
+                <?php if($searchResult_count > 10) : ?>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=6">6</a></li>
+                <?php endif ?> 
+                 <?php if($searchResult_count > 12) : ?>
+                <li class="page-item"><a class="page-link" href="?keyword=<?=$keyword?>&cuisinetype=1&page=7">7</a></li>
                 <?php endif ?> 
               </ul>
             <!-- pagination ends --> 

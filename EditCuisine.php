@@ -8,28 +8,11 @@ Topic: Project
   require_once("config.php");
   session_start();
 
-  // $userid = $_SESSION['current_user_id'];
-  // $id = $_GET['id'];
-  // // echo $id;
-  // $query = "SELECT * FROM Recipe JOIN Users using(UserID) WHERE UserID = $userid AND RecipeID = $id";
-
-  // $statement = $ConnectingDB->prepare($query);
-  // $statement->execute(); 
-
-  // $query2 = "SELECT * FROM Cuisines";
-  // $statement_cuisine = $ConnectingDB->prepare($query2);
-  // $statement_cuisine->execute();
-
-  // Delete
-  // echo $_POST['command'];
-
-
-
   $userid = $_SESSION['current_user_id'];
    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
   //$id = $_GET['id']; // current cuisine
 
-    $query2 = "SELECT * FROM Cuisines WHERE CuisineID = $id AND UserID = $userid";
+  $query2 = "SELECT * FROM Cuisines WHERE CuisineID = $id AND UserID = $userid";
   $statement_cuisine = $ConnectingDB->prepare($query2);
   $statement_cuisine->execute();
 
